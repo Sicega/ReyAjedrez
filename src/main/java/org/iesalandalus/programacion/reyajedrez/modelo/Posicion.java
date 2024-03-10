@@ -40,11 +40,11 @@ public class Posicion {
     }
 
     private void setColumna(char columna) { // Establezco el rango de las columnas
-        String columnaValida = Character.toString(columna);
-        if (!"AaBbCcDdEeFfGgHh".contains(columnaValida)) {
+
+        if(columna < 'a' || columna > 'h'){
             throw new IllegalArgumentException("ERROR: Columna no válida.");
         }
-        this.columna = columnaValida.charAt(0);
+        this.columna = columna;
     }
 
     // MÉTODOS EQUALS, HASHCODE Y TOSTRING

@@ -9,17 +9,21 @@ public class Rey {
     private int totalMovimientos;
 
     public Rey(){
-        this.color = Color.BLANCO;
-        this.posicion = new Posicion(1, 'e');
+        setColor(Color.BLANCO);
+        setPosicion(new Posicion(1, 'e'));
         this.totalMovimientos=0;
     }
 
     public Rey(Color color){
-        this.color = color;
+        if(color == null){
+            throw new NullPointerException("ERROR: El color del Rey no puede ser nulo.");
+
+        }
+        setColor(color);
         if (color == Color.BLANCO) {
-            this.posicion = new Posicion(1, 'e');
+            setPosicion(new Posicion(1, 'e'));
         } else {
-            this.posicion = new Posicion(8, 'e');
+            setPosicion(new Posicion(8, 'e'));
         }
         this.totalMovimientos=0;
     }
@@ -51,54 +55,21 @@ public class Rey {
             throw new NullPointerException("ERROR: La dirección no puede ser nula.");
         }
 
-        // Calcula la nueva posición
-        int nuevaFila = posicion.getFila();
-        char nuevaColumna = posicion.getColumna();
-
-        // Modifica las coordenadas según la dirección
-        switch (direccion) {
-            case NORTE:
-                nuevaFila++;
-                break;
-            case NORESTE:
-                nuevaFila++;
-                nuevaColumna++;
-                break;
-            case ESTE:
-                nuevaColumna++;
-                break;
-            case SURESTE:
-                nuevaFila--;
-                nuevaColumna++;
-                break;
-            case SUR:
-                nuevaFila--;
-                break;
-            case SUROESTE:
-                nuevaFila--;
-                nuevaColumna--;
-                break;
-            case OESTE:
-                nuevaColumna--;
-                break;
-            case NOROESTE:
-                nuevaFila++;
-                nuevaColumna--;
-                break;
-            default:
-                throw new IllegalArgumentException("Dirección no válida.");
+        switch (direccion){
+            case SUR -> setPosicion(new Posicion(getPosicion().getFila() -1, getPosicion().getColumna()));
+            case ESTE -> setPosicion(new Posicion(getPosicion().getFila(), (char)((getPosicion().getColumna())+1)));
+            case SURESTE -> setPosicion(new Posicion(getPosicion().getFila()-1, (char)((getPosicion().getColumna())+1)));
+            case NORTE -> setPosicion(new Posicion(getPosicion().getFila()+1, getPosicion().getColumna()));
+            case NORESTE -> setPosicion(new Posicion(getPosicion().getFila()+1,(char)((getPosicion().getColumna())+1)));
+            case NOROESTE -> setPosicion(new Posicion(getPosicion().getFila()+1, (char)(getPosicion().getColumna()-1)));
+            case OESTE -> setPosicion(new Posicion(getPosicion().getFila(),(char)(getPosicion().getColumna()-1)));
+            case SUROESTE -> setPosicion(new Posicion(getPosicion().getFila()-1, (char)((getPosicion().getColumna())-1)));
+            case ENROQUE_CORTO -> setPosicion(new Posicion(getPosicion().getFila(), (char)((getPosicion().getColumna())+2)));
+            case ENROQUE_LARGO -> setPosicion(new Posicion(getPosicion().getFila(), (char)((getPosicion().getColumna())-2)));
         }
-
-        // Verifica que el nuevo movimiento no se salga del tablero
-        if (nuevaFila < 1 || nuevaFila > 8 || nuevaColumna < 'A' || nuevaColumna > 'H') {
-            throw new OperationNotSupportedException("ERROR: Movimiento no válido (se sale del tablero).");
-        }
-
-        this.posicion = new Posicion(nuevaFila, nuevaColumna);
 
         this.totalMovimientos++;
     }
-
 
     private void comprobarEnroque(){
         if (totalMovimientos > 0) {
