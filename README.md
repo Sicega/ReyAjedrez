@@ -1,6 +1,6 @@
 # Tarea Rey Ajedrez
 ## Profesor: Andrés Rubio del Río
-## Alumno:
+## Alumno: Silvia César Garrido
 
 La tarea va a consistir en modelar el movimiento de un rey de ajedrez por el tablero de dicho juego.
 
