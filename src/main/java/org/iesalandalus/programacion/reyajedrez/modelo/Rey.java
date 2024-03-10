@@ -48,7 +48,7 @@ public class Rey {
 
     public void mover(Direccion direccion) throws OperationNotSupportedException {
         if (direccion == null) {
-            throw new NullPointerException("La dirección no puede ser nula.");
+            throw new NullPointerException("ERROR: La dirección no puede ser nula.");
         }
 
         // Calcula la nueva posición
@@ -91,7 +91,7 @@ public class Rey {
 
         // Verifica que el nuevo movimiento no se salga del tablero
         if (nuevaFila < 1 || nuevaFila > 8 || nuevaColumna < 'A' || nuevaColumna > 'H') {
-            throw new OperationNotSupportedException("Movimiento no permitido o fuera de límites.");
+            throw new OperationNotSupportedException("ERROR: Movimiento no válido (se sale del tablero).");
         }
 
         this.posicion = new Posicion(nuevaFila, nuevaColumna);
@@ -137,6 +137,6 @@ public class Rey {
 
     @Override
     public String toString() {
-        return String.format("color=%s, %s", color, posicion);
+        return String.format("color=%s, posicion=(%s)", color, posicion);
     }
 }
