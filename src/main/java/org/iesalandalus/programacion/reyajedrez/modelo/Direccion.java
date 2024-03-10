@@ -20,8 +20,6 @@ public enum Direccion {
 
     @Override
     public String toString() {
-        return "Direccion{" +
-                "cadenaAMostrar='" + cadenaAMostrar + '\'' +
-                '}';
+        return cadenaAMostrar;
     }
 }

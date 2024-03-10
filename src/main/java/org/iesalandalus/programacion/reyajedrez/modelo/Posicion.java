@@ -15,6 +15,9 @@ public class Posicion {
     }
 
     public Posicion (Posicion posicion){ // Constructor copia
+        if(posicion==null){
+            throw new NullPointerException("ERROR: No es posible copiar una posición nula.");
+        }
         setFila(posicion.getFila());
         setColumna(posicion.getColumna());
     }
@@ -27,7 +30,7 @@ public class Posicion {
 
     private void setFila(int fila) { // Establezco la condición del nº de filas
         if(fila <1 || fila>8){
-            throw new IllegalArgumentException("ERROR: La fila no es correcta.");
+            throw new IllegalArgumentException("ERROR: Fila no válida.");
         }
         this.fila = fila;
     }
@@ -37,10 +40,11 @@ public class Posicion {
     }
 
     private void setColumna(char columna) { // Establezco el rango de las columnas
-        if (columna < 'A' || columna > 'H') {
-            throw new IllegalArgumentException("ERROR: La columna debe estar entra la A y la H.");
+        String columnaValida = Character.toString(columna);
+        if (!"AaBbCcDdEeFfGgHh".contains(columnaValida)) {
+            throw new IllegalArgumentException("ERROR: Columna no válida.");
         }
-        this.columna = columna;
+        this.columna = columnaValida.charAt(0);
     }
 
     // MÉTODOS EQUALS, HASHCODE Y TOSTRING

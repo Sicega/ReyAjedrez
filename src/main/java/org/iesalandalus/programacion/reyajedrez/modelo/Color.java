@@ -13,8 +13,6 @@ public enum Color {
 
     @Override
     public String toString() {
-        return "Color{" +
-                "cadenaAMostrar='" + cadenaAMostrar + '\'' +
-                '}';
+        return cadenaAMostrar;
     }
 }
