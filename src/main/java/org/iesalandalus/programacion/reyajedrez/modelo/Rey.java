@@ -8,19 +8,19 @@ public class Rey {
     private Posicion posicion;
     private int totalMovimientos;
 
-    public Rey(){
+    public Rey() throws OperationNotSupportedException{
         setColor(Color.BLANCO);
         setPosicion(new Posicion(1, 'e'));
         this.totalMovimientos=0;
     }
 
-    public Rey(Color color){
+    public Rey(Color color) throws OperationNotSupportedException{
         if(color == null){
-            throw new NullPointerException("ERROR: El color del Rey no puede ser nulo.");
+            throw new NullPointerException("ERROR: El color no puede ser nulo.");
 
         }
         setColor(color);
-        if (color == Color.BLANCO) {
+        if (color.equals(Color.BLANCO)) {
             setPosicion(new Posicion(1, 'e'));
         } else {
             setPosicion(new Posicion(8, 'e'));
@@ -43,29 +43,41 @@ public class Rey {
         return posicion;
     }
 
-    private void setPosicion(Posicion posicion) {
+    private void setPosicion(Posicion posicion) throws OperationNotSupportedException {
         if(posicion == null){
             throw new NullPointerException("ERROR: La posición no puede ser nula.");
+        }
+        if(posicion.getFila()<1 || posicion.getFila() >8){
+            throw new OperationNotSupportedException("La fila no es correcta.");
+        }
+        if(posicion.getColumna()<'a' || posicion.getColumna()>'h'){
+            throw new OperationNotSupportedException("La columna no es correcta.");
         }
         this.posicion = posicion;
     }
 
-    public void mover(Direccion direccion) throws OperationNotSupportedException {
+    public void mover(Direccion direccion) throws OperationNotSupportedException{
         if (direccion == null) {
             throw new NullPointerException("ERROR: La dirección no puede ser nula.");
         }
 
         switch (direccion){
             case SUR -> setPosicion(new Posicion(getPosicion().getFila() -1, getPosicion().getColumna()));
-            case ESTE -> setPosicion(new Posicion(getPosicion().getFila(), (char)((getPosicion().getColumna())+1)));
-            case SURESTE -> setPosicion(new Posicion(getPosicion().getFila()-1, (char)((getPosicion().getColumna())+1)));
+            case ESTE -> setPosicion(new Posicion(getPosicion().getFila(), (char)(getPosicion().getColumna()+1)));
+            case SURESTE -> setPosicion(new Posicion(getPosicion().getFila()-1, (char)(getPosicion().getColumna()+1)));
             case NORTE -> setPosicion(new Posicion(getPosicion().getFila()+1, getPosicion().getColumna()));
-            case NORESTE -> setPosicion(new Posicion(getPosicion().getFila()+1,(char)((getPosicion().getColumna())+1)));
+            case NORESTE -> setPosicion(new Posicion(getPosicion().getFila()+1,(char)(getPosicion().getColumna()+1)));
             case NOROESTE -> setPosicion(new Posicion(getPosicion().getFila()+1, (char)(getPosicion().getColumna()-1)));
             case OESTE -> setPosicion(new Posicion(getPosicion().getFila(),(char)(getPosicion().getColumna()-1)));
-            case SUROESTE -> setPosicion(new Posicion(getPosicion().getFila()-1, (char)((getPosicion().getColumna())-1)));
-            case ENROQUE_CORTO -> setPosicion(new Posicion(getPosicion().getFila(), (char)((getPosicion().getColumna())+2)));
-            case ENROQUE_LARGO -> setPosicion(new Posicion(getPosicion().getFila(), (char)((getPosicion().getColumna())-2)));
+            case SUROESTE -> setPosicion(new Posicion(getPosicion().getFila()-1, (char)(getPosicion().getColumna()-1)));
+            case ENROQUE_CORTO ->{
+                comprobarEnroque();
+                setPosicion(new Posicion(getPosicion().getFila(), (char)(getPosicion().getColumna()+2)));
+            }
+            case ENROQUE_LARGO->{
+                comprobarEnroque();
+                setPosicion(new Posicion(getPosicion().getFila(), (char)(getPosicion().getColumna()-2)));
+            }
         }
 
         this.totalMovimientos++;
@@ -76,33 +88,17 @@ public class Rey {
             throw new IllegalArgumentException("ERROR: No se puede realizar el enroque, el rey ya ha realizado movimientos.");
         }
 
-        // Verifica la posición y el color para determinar si se puede realizar el enroque
-        if (color == Color.BLANCO) {
-            // Enroque corto blanco
-            if (posicion.getFila() == 1 && posicion.getColumna() == 'e') {
-                this.posicion = new Posicion(1, 'g');
-                totalMovimientos += 2; // El enroque cuenta como dos movimientos
-            }
+        if(color.equals(Color.BLANCO)){
 
-            // Enroque largo blanco
-            if (posicion.getFila() == 1 && posicion.getColumna() == 'e') {
-                this.posicion = new Posicion(1, 'c');
-                totalMovimientos += 2; // El enroque cuenta como dos movimientos también, ya que lo que cambiaría es el movimiento de la torre
-            }
-        } else if (color == Color.NEGRO) {
-            // Enroque corto negro
-            if (posicion.getFila() == 8 && posicion.getColumna() == 'e') {
-                this.posicion = new Posicion(8, 'g');
-                totalMovimientos += 2;
-            }
+           if(posicion.getFila()!=1 || posicion.getColumna()!='e' ){
+               throw new IllegalArgumentException("La posición no es inicial.");
+           }
 
-            // Enroque largo negro
-            if (posicion.getFila() == 8 && posicion.getColumna() == 'e') {
-                this.posicion = new Posicion(8, 'c');
-                totalMovimientos += 2;
+        } else{
+
+            if (posicion.getFila() != 8 || posicion.getColumna() != 'e') {
+                throw new IllegalArgumentException("La posición no es inicial.");
             }
-        }else{
-            throw new IllegalArgumentException("ERROR: No se puede realizar enroque desde esa posicion.");
         }
     }
 

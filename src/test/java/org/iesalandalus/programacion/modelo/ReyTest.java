@@ -26,14 +26,14 @@ class ReyTest {
 	private static Rey reyNegro;
 
 	@BeforeEach
-	void asignarValoresReyes()
+	void asignarValoresReyes() throws OperationNotSupportedException
 	{
 		reyBlanco = new Rey(Color.BLANCO);
 		reyNegro = new Rey(Color.NEGRO);
 	}
 
 	@Test
-	void constructores()
+	void constructores() throws OperationNotSupportedException
 	{
 		// Test de constructor por defecto
 
@@ -165,7 +165,7 @@ class ReyTest {
 	}
 
 	@Test
-	void toStringImprimeCorrectamente()
+	void toStringImprimeCorrectamente() throws OperationNotSupportedException
 	{
 		reyBlanco = new Rey(Color.BLANCO);
 		assertEquals("color=Blanco, posicion=(fila=1, columna=e)", reyBlanco.toString(), CADENA_NO_ESPERADA);
